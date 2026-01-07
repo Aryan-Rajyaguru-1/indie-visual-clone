@@ -11,7 +11,7 @@ const services = [
   },
   {
     icon: Layout,
-    title: "UI/UX Design",
+    title: "Web designing",
     description:
       "Beautiful and intuitive user interfaces for websites, mobile apps, and dashboards that enhance user experience and drive conversions.",
     image: "https://images.unsplash.com/photo-1545235617-9465d2a55698?w=600&q=80",
@@ -39,7 +39,7 @@ const services = [
   },
   {
     icon: PenTool,
-    title: "Illustration & Icons",
+    title: "Logo designing",
     description:
       "Custom illustrations, icon sets, and visual assets that add personality and uniqueness to your brand communications.",
     image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80",

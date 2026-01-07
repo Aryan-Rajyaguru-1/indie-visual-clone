@@ -12,9 +12,9 @@ const portfolioItems = [
   { image: portfolio1, title: "Gauntlet Tech", category: "Brand Identity" },
   { image: portfolio2, title: "Social Campaign", category: "Social Media" },
   { image: portfolio3, title: "Vogue Editorial", category: "Print Design" },
-  { image: portfolio4, title: "SaaS Dashboard", category: "UI/UX Design" },
+  { image: portfolio4, title: "SaaS Dashboard", category: "Web designing" },
   { image: portfolio5, title: "Luxe Cosmetics", category: "Packaging" },
-  { image: portfolio6, title: "Creative Series", category: "Illustration" },
+  { image: portfolio6, title: "Creative Series", category: "Logo designing" },
 ];
 
 export const Portfolio = () => {

@@ -50,10 +50,6 @@ export const Hero = () => {
               to social media graphics and print designs - through a creative process 
               that brings your vision to life.
             </p>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              From brand identity, UI/UX design, marketing collateral, to packaging 
-              and illustrations. One creative studio that does it all.
-            </p>
             <Button className="btn-primary group">
               Start Your Project
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

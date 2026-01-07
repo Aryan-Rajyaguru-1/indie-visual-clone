@@ -8,7 +8,7 @@ const footerLinks = [
   },
   {
     title: "Services",
-    links: ["Brand Identity", "UI/UX Design", "Social Media", "Packaging"],
+    links: ["Brand Identity", "Web designing", "Social Media", "Packaging"],
   },
   {
     title: "Resources",

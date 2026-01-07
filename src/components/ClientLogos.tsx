@@ -1,16 +1,16 @@
 const clients = [
-  "Adobe",
-  "Canva",
-  "Figma",
-  "Shopify",
-  "Spotify",
-  "Slack",
-  "Notion",
-  "Stripe",
-  "Airbnb",
-  "Netflix",
-  "Uber",
-  "Nike",
+  "Estrallas",
+  "Ecogen",
+  "Fronius",
+  "Zicad",
+  "Kumar products",
+  "Krish",
+  "Avitra",
+  "Rappa foods",
+  "Adventure times",
+  "hhpw",
+  "Capitate",
+  "Ayunation",
 ];
 
 export const ClientLogos = () => {
