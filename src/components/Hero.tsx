@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const stats = [
-  { number: "1500+", label: "Total Videos" },
-  { number: "150+", label: "Clients" },
-  { number: "40+", label: "Cities" },
-  { number: "10+", label: "Languages" },
+  { number: "500+", label: "Projects Delivered" },
+  { number: "120+", label: "Happy Clients" },
+  { number: "15+", label: "Design Awards" },
+  { number: "8+", label: "Years Experience" },
 ];
 
 export const Hero = () => {
@@ -30,11 +30,11 @@ export const Hero = () => {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-              Enterprise Video Production.
+              Creative Graphic Design.
               <br />
-              Delivered at Scale.
+              Brands Built to Stand Out.
               <br />
-              <span className="text-gradient-accent">Without the Chaos.</span>
+              <span className="text-gradient-accent">Pixel Perfect.</span>
             </h1>
           </motion.div>
 
@@ -46,16 +46,16 @@ export const Hero = () => {
             className="space-y-6"
           >
             <p className="text-lg text-muted-foreground leading-relaxed">
-              IndieVisual creates high-quality video - quickly, reliably, and at scale - 
-              through a structured production system that brings together creative experts, 
-              professional crews, and tech-first workflows.
+              AP Creation delivers stunning visual identities - from logos and branding 
+              to social media graphics and print designs - through a creative process 
+              that brings your vision to life.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              From explainers, AI videos & ads, to interviews, podcasts, training, 
-              & internal films. One video production company in India that does it all.
+              From brand identity, UI/UX design, marketing collateral, to packaging 
+              and illustrations. One creative studio that does it all.
             </p>
             <Button className="btn-primary group">
-              Talk to an Expert
+              Start Your Project
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Button>
           </motion.div>

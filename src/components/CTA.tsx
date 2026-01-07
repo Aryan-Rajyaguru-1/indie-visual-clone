@@ -17,23 +17,23 @@ export const CTA = () => {
           className="max-w-4xl mx-auto text-center"
         >
           <h2 className="section-heading mb-6">
-            Get Professional Video Campaigns in Weeks.
+            Turn Your Ideas Into Stunning Designs
           </h2>
           <p className="text-2xl md:text-3xl font-medium text-muted-foreground mb-4">
-            Send your brief. Get your quote. Launch your campaign.
+            Share your vision. Get a custom quote. Launch your brand.
           </p>
           <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
-            No more waiting months for video content. Get agency-level creatives, 
-            and peak professionalism - at startup speed.
+            No more waiting weeks for designs. Get premium creative work delivered 
+            on time, every time - at prices that make sense.
           </p>
           
           <Button className="btn-primary text-lg px-8 py-4 group">
-            Let's Go
+            Start Your Project
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </Button>
         </motion.div>
 
-        {/* Decorative Images */}
+        {/* Decorative Elements */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

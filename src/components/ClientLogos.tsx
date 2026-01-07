@@ -1,16 +1,16 @@
 const clients = [
-  "Philips",
-  "Amazon",
-  "Google",
-  "Microsoft",
-  "Samsung",
-  "Apple",
-  "Meta",
-  "Netflix",
-  "Spotify",
   "Adobe",
-  "Salesforce",
-  "Oracle",
+  "Canva",
+  "Figma",
+  "Shopify",
+  "Spotify",
+  "Slack",
+  "Notion",
+  "Stripe",
+  "Airbnb",
+  "Netflix",
+  "Uber",
+  "Nike",
 ];
 
 export const ClientLogos = () => {
@@ -18,7 +18,7 @@ export const ClientLogos = () => {
     <section className="py-16 bg-secondary/30 border-y border-border/50 overflow-hidden">
       <div className="container mx-auto px-4 mb-8">
         <h2 className="text-center text-lg font-medium text-muted-foreground">
-          Video Production that's Trusted - Across India.
+          Trusted by Leading Brands Worldwide
         </h2>
       </div>
 

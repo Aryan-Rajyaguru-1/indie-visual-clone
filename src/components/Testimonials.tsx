@@ -5,38 +5,38 @@ import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 const testimonials = [
   {
     quote:
-      "The videos came out fantastic. It was a very quick, professionally planned and well-managed production.",
-    author: "Loveleen Kaur",
-    role: "Creative Lead",
-    company: "Philips",
+      "AP Creation transformed our brand identity completely. The designs were fresh, modern, and perfectly captured our vision. Highly recommended!",
+    author: "Sarah Mitchell",
+    role: "Marketing Director",
+    company: "TechFlow",
   },
   {
     quote:
-      "We needed a lot of very structured, professional, seamlessly-organized video production work. And well within our budget. IndieVisual delivered!",
-    author: "Amit Kumar Srivastava",
-    role: "AVP Marketing",
-    company: "Enterprise Client",
+      "Working with AP Creation was a game-changer for our startup. They delivered stunning UI designs that our users absolutely love.",
+    author: "James Chen",
+    role: "CEO & Founder",
+    company: "NovaTech",
   },
   {
     quote:
-      "IndieVisual streamlined our video production entirely. Their platform offers on-demand access and makes their team feel like a seamless internal extension.",
-    author: "Nanki Jassal",
-    role: "Strategic Consultant",
-    company: "Fortune 500",
+      "The packaging design exceeded our expectations. Our products now stand out on every shelf, and sales have increased significantly.",
+    author: "Priya Sharma",
+    role: "Brand Manager",
+    company: "Luxe Beauty",
   },
   {
     quote:
-      "We've collaborated with IndieVisual on several events and video projects, and the experience has consistently been smooth and hassle-free.",
-    author: "Aaditya Vinayak",
-    role: "Senior Associate",
-    company: "Investment Firm",
+      "Fast turnaround, exceptional quality, and great communication throughout. AP Creation is now our go-to design partner.",
+    author: "Michael Roberts",
+    role: "Creative Director",
+    company: "Digital Nexus",
   },
   {
     quote:
-      "It was really a pleasure working with your team on our corporate videos. We will continue to use your services wherever we can.",
-    author: "Rahul Guha",
-    role: "Managing Director & CEO",
-    company: "Tech Company",
+      "The social media graphics they created boosted our engagement by 300%. Their understanding of visual trends is unmatched.",
+    author: "Emily Watson",
+    role: "Social Media Manager",
+    company: "GrowthHub",
   },
 ];
 
@@ -61,7 +61,7 @@ export const Testimonials = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="section-heading">What Our Clients Say About Us</h2>
+          <h2 className="section-heading">What Our Clients Say</h2>
         </motion.div>
 
         <div className="max-w-4xl mx-auto">
