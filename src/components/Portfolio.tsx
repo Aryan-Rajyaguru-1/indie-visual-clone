@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Play } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import portfolio1 from "@/assets/portfolio-1.jpg";
 import portfolio2 from "@/assets/portfolio-2.jpg";
@@ -9,12 +9,12 @@ import portfolio5 from "@/assets/portfolio-5.jpg";
 import portfolio6 from "@/assets/portfolio-6.jpg";
 
 const portfolioItems = [
-  { image: portfolio1, title: "Anthem Biosciences", category: "Corporate Video" },
-  { image: portfolio2, title: "Corporate Connections", category: "Interview" },
-  { image: portfolio3, title: "Barosi Foods", category: "Product Video" },
-  { image: portfolio4, title: "Philips India", category: "Testimonial" },
-  { image: portfolio5, title: "Tech Summit 2024", category: "Event Coverage" },
-  { image: portfolio6, title: "Sturlite Energy", category: "Animation" },
+  { image: portfolio1, title: "Gauntlet Tech", category: "Brand Identity" },
+  { image: portfolio2, title: "Social Campaign", category: "Social Media" },
+  { image: portfolio3, title: "Vogue Editorial", category: "Print Design" },
+  { image: portfolio4, title: "SaaS Dashboard", category: "UI/UX Design" },
+  { image: portfolio5, title: "Luxe Cosmetics", category: "Packaging" },
+  { image: portfolio6, title: "Creative Series", category: "Illustration" },
 ];
 
 export const Portfolio = () => {
@@ -31,9 +31,8 @@ export const Portfolio = () => {
         >
           <h2 className="section-heading mb-6">Our Work</h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Brands rely on video across marketing, sales, HR, leadership, and internal 
-            communication. With 1,500 videos delivered across 150 clients, we work as 
-            a long-term production partner.
+            Every project tells a story. With 500+ designs delivered across 120+ clients, 
+            we create visuals that resonate with audiences and drive real business results.
           </p>
         </motion.div>
 
@@ -57,10 +56,10 @@ export const Portfolio = () => {
               {/* Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
               
-              {/* Play Button */}
+              {/* View Button */}
               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center transform scale-90 group-hover:scale-100 transition-transform duration-300">
-                  <Play className="w-6 h-6 text-accent-foreground fill-current ml-1" />
+                <div className="w-14 h-14 bg-accent rounded-full flex items-center justify-center transform scale-90 group-hover:scale-100 transition-transform duration-300">
+                  <ExternalLink className="w-5 h-5 text-accent-foreground" />
                 </div>
               </div>
               
@@ -84,7 +83,7 @@ export const Portfolio = () => {
           className="flex flex-col sm:flex-row gap-4 justify-center mt-12"
         >
           <Button className="btn-primary">Get a Quote</Button>
-          <Button className="btn-outline">See Our Portfolio</Button>
+          <Button className="btn-outline">View Full Portfolio</Button>
         </motion.div>
       </div>
     </section>

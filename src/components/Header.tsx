@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
-  { label: "Video Production", hasDropdown: true },
+  { label: "Design Services", hasDropdown: true },
   { label: "Packages", href: "#packages" },
   { label: "Portfolio", href: "#portfolio" },
   { label: "Case Studies", href: "#case-studies" },
@@ -21,10 +21,10 @@ export const Header = () => {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <a href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-lg">V</span>
+            <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
+              <span className="text-primary-foreground font-bold text-lg">AP</span>
             </div>
-            <span className="text-xl font-semibold text-foreground">IndieVisual</span>
+            <span className="text-xl font-semibold text-foreground">AP Creation</span>
           </a>
 
           {/* Desktop Navigation */}

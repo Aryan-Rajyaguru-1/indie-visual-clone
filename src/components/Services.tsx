@@ -1,48 +1,48 @@
 import { motion } from "framer-motion";
-import { Play, Film, Mic, Package, Users, Sparkles } from "lucide-react";
+import { Palette, Layout, Smartphone, Package, Brush, PenTool } from "lucide-react";
 
 const services = [
   {
-    icon: Play,
-    title: "Explainers & Training Videos",
+    icon: Palette,
+    title: "Brand Identity Design",
     description:
-      "Need to explain complex concepts to your team and clients? Explainer videos, training videos, tutorials and animated videos work best.",
-    image: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=600&q=80",
+      "Complete brand identity packages including logos, color palettes, typography, and brand guidelines that make your business memorable.",
+    image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=80",
   },
   {
-    icon: Film,
-    title: "Corporate Videos",
+    icon: Layout,
+    title: "UI/UX Design",
     description:
-      "A strong corporate film helps people understand your company. Tie together your work, your culture, and your purpose through watchable company profiles.",
-    image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&q=80",
+      "Beautiful and intuitive user interfaces for websites, mobile apps, and dashboards that enhance user experience and drive conversions.",
+    image: "https://images.unsplash.com/photo-1545235617-9465d2a55698?w=600&q=80",
   },
   {
-    icon: Mic,
-    title: "Events & Live Coverage",
+    icon: Smartphone,
+    title: "Social Media Graphics",
     description:
-      "Got a conference, workshop, offsite, or internal event coming up? Turn it into an event film that documents the day.",
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80",
+      "Eye-catching social media content, posts, stories, and ad creatives that boost engagement and grow your online presence.",
+    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&q=80",
   },
   {
     icon: Package,
-    title: "Product Ads & Demos",
+    title: "Packaging Design",
     description:
-      "When buyers want to see before they choose, a product demo makes the decision easier. Highlight real usage, key features, and outcomes.",
-    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80",
+      "Premium product packaging that stands out on shelves and creates memorable unboxing experiences for your customers.",
+    image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=600&q=80",
   },
   {
-    icon: Users,
-    title: "Testimonial Videos",
+    icon: Brush,
+    title: "Print & Marketing",
     description:
-      "Nothing builds trust like a customer explaining what changed for them. Give prospects a grounded, human view of your product's impact.",
-    image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&q=80",
+      "Professional print designs including brochures, flyers, business cards, banners, and all marketing collateral your business needs.",
+    image: "https://images.unsplash.com/photo-1572044162444-ad60f128bdea?w=600&q=80",
   },
   {
-    icon: Sparkles,
-    title: "Animation & AI Videos",
+    icon: PenTool,
+    title: "Illustration & Icons",
     description:
-      "Some ideas are easier shown than spoken. Animation and AI visuals simplify complex products and technical concepts.",
-    image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=600&q=80",
+      "Custom illustrations, icon sets, and visual assets that add personality and uniqueness to your brand communications.",
+    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80",
   },
 ];
 
@@ -59,12 +59,12 @@ export const Services = () => {
           className="text-center max-w-4xl mx-auto mb-16"
         >
           <h2 className="section-heading mb-6">
-            Professional Video Production Across Genres.
+            Creative Design Services That Elevate Brands
           </h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Good video is much more than a camera and an editor. It comes from a 
-            series of thoughtful decisions and planned execution - creative direction, 
-            narrative flow, scripting, shot planning, execution, and editing.
+            Great design is more than aesthetics. It is strategic thinking translated 
+            into visuals - understanding your audience, crafting the right message, 
+            and delivering it with stunning creativity.
           </p>
         </motion.div>
 
