@@ -1,22 +1,40 @@
+import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const footerLinks = [
   {
     title: "Company",
-    links: ["Home", "About Us", "Contact Us", "Careers"],
+    links: [
+      { label: "Home", href: "/" },
+      { label: "About Us", href: "/about" },
+      { label: "Contact Us", href: "/contact" },
+      { label: "Careers", href: "/contact" },
+    ],
   },
   {
     title: "Services",
-    links: ["Brand Identity", "Web designing", "Social Media", "Packaging"],
+    links: [
+      { label: "Brand Identity", href: "/services" },
+      { label: "Web Design", href: "/services" },
+      { label: "Social Media", href: "/services" },
+      { label: "Packaging", href: "/services" },
+    ],
   },
   {
     title: "Resources",
-    links: ["Blog", "Case Studies", "Pricing", "FAQ"],
+    links: [
+      { label: "Blog", href: "/blog" },
+      { label: "Portfolio", href: "/portfolio" },
+      { label: "FAQ", href: "/contact" },
+    ],
   },
   {
     title: "Legal",
-    links: ["Privacy Policy", "Terms & Conditions"],
+    links: [
+      { label: "Privacy Policy", href: "/about" },
+      { label: "Terms & Conditions", href: "/about" },
+    ],
   },
 ];
 
@@ -29,10 +47,12 @@ export const Footer = () => {
           <h3 className="text-2xl lg:text-3xl font-bold mb-4">
             Ready to Elevate Your Brand?
           </h3>
-          <Button className="btn-primary group">
-            Get Started
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </Button>
+          <Link to="/contact">
+            <Button className="btn-primary group">
+              Get Started
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </Link>
         </div>
       </div>
 
@@ -41,12 +61,12 @@ export const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
           {/* Brand */}
           <div className="col-span-2 lg:col-span-1">
-            <a href="/" className="flex items-center gap-2 mb-4">
+            <Link to="/" className="flex items-center gap-2 mb-4">
               <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-lg">AP</span>
               </div>
               <span className="text-xl font-semibold">AP Creation</span>
-            </a>
+            </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Creative graphic design studio delivering pixel-perfect designs that elevate brands.
             </p>
@@ -58,13 +78,13 @@ export const Footer = () => {
               <h4 className="font-semibold mb-4 text-sm">{section.title}</h4>
               <ul className="space-y-3">
                 {section.links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
+                  <li key={link.label}>
+                    <Link
+                      to={link.href}
                       className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                     >
-                      {link}
-                    </a>
+                      {link.label}
+                    </Link>
                   </li>
                 ))}
               </ul>
