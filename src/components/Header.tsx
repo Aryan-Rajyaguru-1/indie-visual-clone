@@ -4,10 +4,21 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
-  { label: "Design Services", hasDropdown: true },
-  { label: "Packages", href: "#packages" },
+  { 
+    label: "Design Services", 
+    hasDropdown: true,
+    dropdownItems: [
+      { label: "Brand Identity", href: "/services" },
+      { label: "Web Design", href: "/services" },
+      { label: "Social Media", href: "/services" },
+      { label: "Packaging", href: "/services" },
+      { label: "Print & Marketing", href: "/services" },
+      { label: "Logo Design", href: "/services" },
+    ]
+  },
+  { label: "Packages", href: "#services" },
   { label: "Portfolio", href: "#portfolio" },
-  { label: "Case Studies", href: "#case-studies" },
+  { label: "Case Studies", href: "#testimonials" },
   { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },
 ];
@@ -16,16 +27,17 @@ export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b-2 border-gray-200">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-lg">AP</span>
-            </div>
-            <span className="text-xl font-semibold text-foreground">AP Creation</span>
-          </a>
+          <Link to="/" className="flex items-center gap-3">
+            <img
+              src="/assets/ap-creation-logo.png"
+              alt="AP Creation Logo"
+              className="h-14 w-auto object-contain"
+            />
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-8">
@@ -33,7 +45,7 @@ export const Header = () => {
               <a
                 key={item.label}
                 href={item.href || "#"}
-                className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                className="flex items-center gap-1 text-sm font-medium text-black hover:text-orange-500 transition-colors"
               >
                 {item.label}
                 {item.hasDropdown && <ChevronDown className="w-4 h-4" />}
@@ -68,18 +80,59 @@ export const Header = () => {
             <div className="container mx-auto px-4 py-4">
               <nav className="flex flex-col gap-4">
                 {navItems.map((item) => (
-                  <a
-                    key={item.label}
-                    href={item.href || "#"}
-                    className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {item.label}
-                  </a>
+                  item.hasDropdown ? (
+                    <div key={item.label} className="space-y-2">
+                      <span className="text-base font-medium text-foreground">
+                        {item.label}
+                      </span>
+                      <div className="pl-4 space-y-2">
+                        {item.dropdownItems?.map((dropItem) => (
+                          <Link
+                            key={dropItem.label}
+                            to={dropItem.href}
+                            className="block text-sm text-muted-foreground hover:text-foreground transition-colors py-1"
+                            onClick={() => setIsOpen(false)}
+                          >
+                            {dropItem.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <Link
+                      key={item.label}
+                      to={item.href || "#"}
+                      className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  )
                 ))}
-                <Button className="btn-primary mt-4 w-full justify-center">
-                  Get a Quote
-                </Button>
+                {user ? (
+                  <>
+                    <div className="border-t border-border pt-4 mt-2">
+                      <p className="text-sm text-muted-foreground mb-2">{user.email}</p>
+                      <Button
+                        variant="destructive"
+                        className="w-full justify-center"
+                        onClick={() => {
+                          handleSignOut();
+                          setIsOpen(false);
+                        }}
+                      >
+                        <LogOut className="w-4 h-4 mr-2" />
+                        Sign Out
+                      </Button>
+                    </div>
+                  </>
+                ) : (
+                  <Link to="/auth" onClick={() => setIsOpen(false)}>
+                    <Button className="btn-primary mt-4 w-full justify-center">
+                      Get a Quote
+                    </Button>
+                  </Link>
+                )}
               </nav>
             </div>
           </motion.div>
