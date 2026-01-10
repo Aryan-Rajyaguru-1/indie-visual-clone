@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export const CTA = () => {
   return (
@@ -27,10 +28,12 @@ export const CTA = () => {
             on time, every time - at prices that make sense.
           </p>
           
-          <Button className="btn-primary text-lg px-8 py-4 group">
-            Start Your Project
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </Button>
+          <Link to="/contact">
+            <Button className="btn-primary text-lg px-8 py-4 group">
+              Start Your Project
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </Link>
         </motion.div>
 
         {/* Decorative Elements */}
