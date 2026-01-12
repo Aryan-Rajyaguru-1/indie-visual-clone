@@ -1,34 +1,26 @@
 import { useState } from "react";
 
-// Logo imports - add your Zicad logo here
-const zicadLogo = "/assets/zicad-logo.jpg"; // Path relative to public folder
-const estrellasLogo = "/assets/estrellas-logo.jpg"; // Path relative to public folder
-const coronaLogo = "/assets/corona-logo.jpg"; // Path relative to public folder
-const froniusLogo = "/assets/fronius-logo.jpg"; // Path relative to public folder
-const accretionLogo = "/assets/accretion-logo.jpg"; // Path relative to public folder
-const kumarLogo = "/assets/kumar-logo.jpg"; // Path relative to public folder
-const sanitasLogo = "/assets/sanitas-logo.jpg"; // Path relative to public folder
-const maapharmaLogo = "/assets/maapharma-logo.jpg"; // Path relative to public folder
-const skylinkLogo = "/assets/skylink-logo.jpg"; // Path relative to public folder
-const avitrLogo = "/assets/avitr-logo.jpg"; // Path relative to public folder
-const everalLogo = "/assets/everal-logo.jpg"; // Path relative to public folder
-const ayunationLogo = "/assets/ayunation-logo.jpg"; // Path relative to public folder
-const jainikLogo = "/assets/jainik-logo.jpg"; // Path relative to public folder
-const bshardaLogo = "/assets/bsharda-logo.jpg"; // Path relative to public folder
+// Logo imports - ES6 imports from src/assets
+import clientLogo1 from "@/assets/client-logo-1.jpg";
+import clientLogo2 from "@/assets/client-logo-2.jpg";
+import clientLogo3 from "@/assets/client-logo-3.jpg";
+import clientLogo4 from "@/assets/client-logo-4.jpg";
+import clientLogo5 from "@/assets/client-logo-5.jpg";
+import clientLogo6 from "@/assets/client-logo-6.jpg";
 
 const clients = [
-  { name: "Estrallas", logo: estrellasLogo },
-  { name: "Ecogen", logo: coronaLogo },
-  { name: "Fronius", logo: froniusLogo },
-  { name: "Zicad", logo: zicadLogo },
-  { name: "Kumar products", logo: accretionLogo },
-  { name: "Krish", logo: kumarLogo },
-  { name: "Avitra", logo: avitrLogo },
-  { name: "Rappa foods", logo: sanitasLogo },
-  { name: "Adventure times", logo: maapharmaLogo },
-  { name: "hhpw", logo: skylinkLogo },
-  { name: "Capitate", logo: everalLogo },
-  { name: "Ayunation", logo: ayunationLogo },
+  { name: "Estrallas", logo: clientLogo1 },
+  { name: "Ecogen", logo: clientLogo2 },
+  { name: "Fronius", logo: clientLogo3 },
+  { name: "Zicad", logo: clientLogo4 },
+  { name: "Kumar Products", logo: clientLogo5 },
+  { name: "Krish", logo: clientLogo6 },
+  { name: "Avitra", logo: clientLogo1 },
+  { name: "Rappa Foods", logo: clientLogo2 },
+  { name: "Adventure Times", logo: clientLogo3 },
+  { name: "HHPW", logo: clientLogo4 },
+  { name: "Capitate", logo: clientLogo5 },
+  { name: "Ayunation", logo: clientLogo6 },
 ];
 
 export const ClientLogos = () => {
@@ -38,34 +30,31 @@ export const ClientLogos = () => {
     setImageErrors(prev => new Set(prev).add(clientName));
   };
 
-  const renderClient = (client: string | { name: string; logo: string }, index: number, keyPrefix: string) => {
-    const clientName = typeof client === 'string' ? client : client.name;
-    const clientLogo = typeof client === 'object' ? client.logo : null;
-
+  const renderClient = (client: { name: string; logo: string }, index: number, keyPrefix: string) => {
     return (
       <div
         key={`${keyPrefix}-${index}`}
         className="flex-shrink-0 mx-8 bg-card/50 rounded-lg border border-border/30 hover:bg-card/70 transition-colors"
       >
-        {clientLogo && !imageErrors.has(clientName) ? (
+        {!imageErrors.has(client.name) ? (
           <img
-            src={clientLogo}
-            alt={clientName}
-            onError={() => handleImageError(clientName)}
+            src={client.logo}
+            alt={client.name}
+            onError={() => handleImageError(client.name)}
             className="h-24 w-auto object-contain rounded-lg hover:brightness-110 transition-all duration-300"
           />
         ) : (
-          <span className="text-muted-foreground font-medium text-sm whitespace-nowrap">
-            {clientName}
+          <span className="text-muted-foreground font-medium text-sm whitespace-nowrap p-4">
+            {client.name}
           </span>
         )}
       </div>
     );
   };
 
-  // Split clients into two rows - 7 logos each
-  const firstRowClients = clients.slice(0, 7);
-  const secondRowClients = clients.slice(7);
+  // Split clients into two rows - 6 logos each
+  const firstRowClients = clients.slice(0, 6);
+  const secondRowClients = clients.slice(6);
 
   return (
     <section className="py-16 bg-secondary/30 border-y border-border/50 overflow-hidden">
