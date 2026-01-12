@@ -44,7 +44,7 @@ export const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b-2 border-gray-200">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
@@ -62,7 +62,7 @@ export const Header = () => {
               <a
                 key={item.label}
                 href={item.href || "#"}
-                className="flex items-center gap-1 text-sm font-medium text-black hover:text-orange-500 transition-colors"
+                className="flex items-center gap-1 text-sm font-medium text-foreground hover:text-primary transition-colors"
               >
                 {item.label}
                 {item.hasDropdown && <ChevronDown className="w-4 h-4" />}
@@ -75,7 +75,7 @@ export const Header = () => {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center gap-2">
+                  <Button variant="outline" className="flex items-center gap-2 border-border text-foreground hover:bg-secondary">
                     <User className="w-4 h-4" />
                     <span className="max-w-32 truncate">{user.email}</span>
                   </Button>
@@ -101,7 +101,7 @@ export const Header = () => {
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden p-2 text-foreground"
+            className="lg:hidden p-2 text-foreground hover:bg-secondary rounded-md transition-colors"
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
