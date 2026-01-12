@@ -34,6 +34,13 @@ const navItems = [
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/auth");
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b-2 border-gray-200">
