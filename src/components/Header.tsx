@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import apCreationLogo from "@/assets/ap-creation-logo.png";
 
 const navItems = [
   { 
@@ -49,7 +50,7 @@ export const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
             <img
-              src="/assets/ap-creation-logo.png"
+              src={apCreationLogo}
               alt="AP Creation Logo"
               className="h-14 w-auto object-contain"
             />
