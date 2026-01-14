@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { Resend } from 'https://esm.sh/resend@2.0.0'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -33,6 +34,58 @@ function isRateLimited(key: string): { limited: boolean; remaining: number; rese
     limited: false, 
     remaining: MAX_REQUESTS_PER_WINDOW - record.count, 
     resetIn: record.resetTime - now 
+  }
+}
+
+async function sendNotificationEmail(resend: Resend, submission: {
+  name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  projectType?: string;
+  budgetRange?: string;
+  message: string;
+}) {
+  const adminEmail = 'hello@apcreation.com' // Change to your admin email
+  
+  try {
+    const { data, error } = await resend.emails.send({
+      from: 'AP Creation <onboarding@resend.dev>', // Update when domain is verified
+      to: [adminEmail],
+      subject: `New Contact Form Submission from ${submission.name}`,
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h1 style="color: #f97316; margin-bottom: 24px;">New Contact Form Submission</h1>
+          
+          <div style="background: #f8fafc; border-radius: 8px; padding: 20px; margin-bottom: 24px;">
+            <h2 style="margin-top: 0; color: #1e293b;">Contact Details</h2>
+            <p><strong>Name:</strong> ${submission.name}</p>
+            <p><strong>Email:</strong> <a href="mailto:${submission.email}">${submission.email}</a></p>
+            ${submission.phone ? `<p><strong>Phone:</strong> ${submission.phone}</p>` : ''}
+            ${submission.company ? `<p><strong>Company:</strong> ${submission.company}</p>` : ''}
+            ${submission.projectType ? `<p><strong>Project Type:</strong> ${submission.projectType}</p>` : ''}
+            ${submission.budgetRange ? `<p><strong>Budget Range:</strong> ${submission.budgetRange}</p>` : ''}
+          </div>
+          
+          <div style="background: #fef3c7; border-radius: 8px; padding: 20px;">
+            <h2 style="margin-top: 0; color: #1e293b;">Message</h2>
+            <p style="white-space: pre-wrap;">${submission.message}</p>
+          </div>
+          
+          <p style="margin-top: 24px; color: #64748b; font-size: 14px;">
+            This email was sent from the AP Creation website contact form.
+          </p>
+        </div>
+      `,
+    })
+
+    if (error) {
+      console.error('Failed to send notification email:', error)
+    } else {
+      console.log('Notification email sent successfully:', data)
+    }
+  } catch (err) {
+    console.error('Error sending notification email:', err)
   }
 }
 
@@ -130,6 +183,23 @@ Deno.serve(async (req) => {
     }
 
     console.log(`Contact submission successful: ${email}, remaining: ${remaining}`)
+
+    // Send notification email
+    const resendApiKey = Deno.env.get('RESEND_API_KEY')
+    if (resendApiKey) {
+      const resend = new Resend(resendApiKey)
+      await sendNotificationEmail(resend, {
+        name: name.trim(),
+        email: email.trim(),
+        phone: phone?.trim(),
+        company: company?.trim(),
+        projectType,
+        budgetRange,
+        message: message.trim(),
+      })
+    } else {
+      console.warn('RESEND_API_KEY not configured, skipping email notification')
+    }
 
     return new Response(
       JSON.stringify({ 
