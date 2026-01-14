@@ -12,6 +12,7 @@ import Contact from "./pages/Contact";
 import PortfolioPage from "./pages/PortfolioPage";
 import Blog from "./pages/Blog";
 import ServicesPage from "./pages/ServicesPage";
+import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -70,6 +71,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <ServicesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <AdminDashboard />
                 </ProtectedRoute>
               }
             />
