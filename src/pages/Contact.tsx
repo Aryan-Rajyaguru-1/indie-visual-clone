@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Send, ArrowRight } from "lucide-react";
+import { Mail, Phone, MapPin, Send, ArrowRight, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,6 +23,9 @@ const contactSchema = z.object({
   message: z.string().min(10, "Message must be at least 10 characters").max(1000),
 });
 
+// Client-side rate limit tracking
+const SUBMISSION_COOLDOWN_MS = 30000; // 30 seconds between submissions
+
 const Contact = () => {
   const { toast } = useToast();
   const { user } = useAuth();
@@ -37,10 +40,24 @@ const Contact = () => {
     message: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const lastSubmissionRef = useRef<number>(0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
+
+    // Client-side rate limiting
+    const now = Date.now();
+    const timeSinceLastSubmission = now - lastSubmissionRef.current;
+    if (timeSinceLastSubmission < SUBMISSION_COOLDOWN_MS) {
+      const waitSeconds = Math.ceil((SUBMISSION_COOLDOWN_MS - timeSinceLastSubmission) / 1000);
+      toast({
+        title: "Please wait",
+        description: `You can submit again in ${waitSeconds} seconds.`,
+        variant: "destructive",
+      });
+      return;
+    }
 
     const result = contactSchema.safeParse(formData);
     if (!result.success) {
@@ -54,26 +71,31 @@ const Contact = () => {
 
     setIsLoading(true);
     
-    const { error } = await supabase.from("contact_submissions").insert({
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone || null,
-      company: formData.company || null,
-      project_type: formData.projectType || null,
-      budget_range: formData.budgetRange || null,
-      message: formData.message,
-      user_id: user?.id,
+    // Use edge function with rate limiting
+    const { data, error } = await supabase.functions.invoke('submit-contact', {
+      body: {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone || null,
+        company: formData.company || null,
+        projectType: formData.projectType || null,
+        budgetRange: formData.budgetRange || null,
+        message: formData.message,
+        userId: user?.id,
+      },
     });
 
     setIsLoading(false);
 
-    if (error) {
+    if (error || data?.error) {
+      const errorMessage = data?.error || "Failed to submit your message. Please try again.";
       toast({
         title: "Error",
-        description: "Failed to submit your message. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       });
     } else {
+      lastSubmissionRef.current = Date.now();
       toast({
         title: "Message Sent!",
         description: "We'll get back to you within 24 hours.",
@@ -251,10 +273,16 @@ const Contact = () => {
                     {errors.message && <p className="text-sm text-destructive">{errors.message}</p>}
                   </div>
 
-                  <Button type="submit" className="btn-primary w-full" disabled={isLoading}>
-                    {isLoading ? "Sending..." : "Send Message"}
-                    <Send className="w-4 h-4" />
-                  </Button>
+                  <div className="flex flex-col sm:flex-row items-center gap-4">
+                    <Button type="submit" className="btn-primary w-full sm:flex-1" disabled={isLoading}>
+                      {isLoading ? "Sending..." : "Send Message"}
+                      <Send className="w-4 h-4" />
+                    </Button>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <Shield className="w-4 h-4 text-green-500" />
+                      <span>Protected by rate limiting</span>
+                    </div>
+                  </div>
                 </form>
               </motion.div>
             </div>
