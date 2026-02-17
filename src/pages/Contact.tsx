@@ -13,7 +13,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 
-const HCAPTCHA_SITE_KEY = "10000000-ffff-ffff-ffff-000000000001"; // Replace with your real hCaptcha site key
+const HCAPTCHA_SITE_KEY = "ES_c72edde94cb04d4aab2165d0627a6819";
 
 declare global {
   interface Window {
