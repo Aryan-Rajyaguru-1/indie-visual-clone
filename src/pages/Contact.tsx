@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
@@ -12,6 +12,18 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
+
+const HCAPTCHA_SITE_KEY = "10000000-ffff-ffff-ffff-000000000001"; // Replace with your real hCaptcha site key
+
+declare global {
+  interface Window {
+    hcaptcha?: {
+      render: (container: string | HTMLElement, params: Record<string, unknown>) => string;
+      reset: (widgetId: string) => void;
+      getResponse: (widgetId: string) => string;
+    };
+  }
+}
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(100),
@@ -41,6 +53,38 @@ const Contact = () => {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const lastSubmissionRef = useRef<number>(0);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const captchaContainerRef = useRef<HTMLDivElement>(null);
+  const captchaWidgetIdRef = useRef<string | null>(null);
+
+  const renderCaptcha = useCallback(() => {
+    if (window.hcaptcha && captchaContainerRef.current && !captchaWidgetIdRef.current) {
+      captchaContainerRef.current.innerHTML = "";
+      const widgetId = window.hcaptcha.render(captchaContainerRef.current, {
+        sitekey: HCAPTCHA_SITE_KEY,
+        callback: (token: string) => setCaptchaToken(token),
+        "expired-callback": () => setCaptchaToken(null),
+        theme: "dark",
+      });
+      captchaWidgetIdRef.current = widgetId;
+    }
+  }, []);
+
+  useEffect(() => {
+    // Load hCaptcha script
+    if (document.querySelector('script[src*="hcaptcha"]')) {
+      renderCaptcha();
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = "https://js.hcaptcha.com/1/api.js?render=explicit";
+    script.async = true;
+    script.onload = () => renderCaptcha();
+    document.head.appendChild(script);
+    return () => {
+      captchaWidgetIdRef.current = null;
+    };
+  }, [renderCaptcha]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,6 +98,15 @@ const Contact = () => {
       toast({
         title: "Please wait",
         description: `You can submit again in ${waitSeconds} seconds.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!captchaToken) {
+      toast({
+        title: "CAPTCHA required",
+        description: "Please complete the CAPTCHA verification.",
         variant: "destructive",
       });
       return;
@@ -82,6 +135,7 @@ const Contact = () => {
         budgetRange: formData.budgetRange || null,
         message: formData.message,
         userId: user?.id,
+        captchaToken,
       },
     });
 
@@ -109,6 +163,10 @@ const Contact = () => {
         budgetRange: "",
         message: "",
       });
+      setCaptchaToken(null);
+      if (window.hcaptcha && captchaWidgetIdRef.current) {
+        window.hcaptcha.reset(captchaWidgetIdRef.current);
+      }
     }
   };
 
@@ -273,14 +331,18 @@ const Contact = () => {
                     {errors.message && <p className="text-sm text-destructive">{errors.message}</p>}
                   </div>
 
+                  <div className="mb-2">
+                    <div ref={captchaContainerRef} />
+                  </div>
+
                   <div className="flex flex-col sm:flex-row items-center gap-4">
-                    <Button type="submit" className="btn-primary w-full sm:flex-1" disabled={isLoading}>
+                    <Button type="submit" className="btn-primary w-full sm:flex-1" disabled={isLoading || !captchaToken}>
                       {isLoading ? "Sending..." : "Send Message"}
                       <Send className="w-4 h-4" />
                     </Button>
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
                       <Shield className="w-4 h-4 text-green-500" />
-                      <span>Protected by rate limiting</span>
+                      <span>Protected by hCaptcha</span>
                     </div>
                   </div>
                 </form>

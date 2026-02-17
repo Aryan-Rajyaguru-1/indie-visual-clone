@@ -109,7 +109,34 @@ Deno.serve(async (req) => {
                      'unknown'
 
     const body = await req.json()
-    const { name, email, phone, company, projectType, budgetRange, message, userId } = body
+    const { name, email, phone, company, projectType, budgetRange, message, userId, captchaToken } = body
+
+    // Verify hCaptcha token
+    if (!captchaToken || typeof captchaToken !== 'string') {
+      return new Response(
+        JSON.stringify({ error: 'CAPTCHA verification is required' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      )
+    }
+
+    const hcaptchaSecret = Deno.env.get('HCAPTCHA_SECRET_KEY')
+    if (hcaptchaSecret) {
+      const verifyRes = await fetch('https://api.hcaptcha.com/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `response=${encodeURIComponent(captchaToken)}&secret=${encodeURIComponent(hcaptchaSecret)}`,
+      })
+      const verifyData = await verifyRes.json()
+      if (!verifyData.success) {
+        console.error('hCaptcha verification failed:', verifyData)
+        return new Response(
+          JSON.stringify({ error: 'CAPTCHA verification failed. Please try again.' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        )
+      }
+    } else {
+      console.warn('HCAPTCHA_SECRET_KEY not configured, skipping verification')
+    }
 
     // Validate required fields
     if (!name || typeof name !== 'string' || name.trim().length < 2 || name.length > 100) {
