@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, ChevronDown, LogOut, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import apLogo from "@/assets/ap-logo.png";
+import apLogo from "@/assets/ap-creation-logo.png";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -44,13 +44,13 @@ export const Header: React.FC = () => {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between py-4 min-h-[80px]">
           <div className="flex items-center gap-6">
-            <Link to="/" className="flex items-center overflow-visible pl-4">
+            <Link to="/" className="flex-shrink-0 flex items-center overflow-visible">
               <div className="overflow-visible flex items-center justify-center bg-white p-1">
                 <img
                   id="site-logo"
                   src={apLogo}
                   alt="AP Creation"
-                  className="w-[264px] h-[60px] max-w-none object-contain object-center"
+                  className="h-[60px] w-auto max-w-none object-contain"
                   style={{ display: 'block' }}
                 />
               </div>
