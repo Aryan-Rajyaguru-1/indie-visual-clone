@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Mail, Lock, User, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, User, ArrowRight, Eye, EyeOff, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,6 +9,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { z } from "zod";
+
+const HCAPTCHA_SITE_KEY = "ES_c72edde94cb04d4aab2165d0627a6819";
+
+declare global {
+  interface Window {
+    hcaptcha?: {
+      render: (container: string | HTMLElement, params: Record<string, unknown>) => string;
+      reset: (widgetId: string) => void;
+      getResponse: (widgetId: string) => string;
+    };
+  }
+}
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -32,6 +44,12 @@ const Auth = () => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [signupData, setSignupData] = useState({ fullName: "", email: "", password: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [activeTab, setActiveTab] = useState("login");
+
+  // hCaptcha state
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const captchaContainerRef = useRef<HTMLDivElement>(null);
+  const captchaWidgetIdRef = useRef<string | null>(null);
 
   const from = (location.state as { from?: { pathname: string } })?.from?.pathname || "/";
 
@@ -41,9 +59,61 @@ const Auth = () => {
     }
   }, [user, navigate, from]);
 
+  const renderCaptcha = useCallback(() => {
+    if (window.hcaptcha && captchaContainerRef.current) {
+      // Reset existing widget
+      if (captchaWidgetIdRef.current !== null) {
+        try { window.hcaptcha.reset(captchaWidgetIdRef.current); } catch {}
+        captchaWidgetIdRef.current = null;
+      }
+      captchaContainerRef.current.innerHTML = "";
+      const widgetId = window.hcaptcha.render(captchaContainerRef.current, {
+        sitekey: HCAPTCHA_SITE_KEY,
+        callback: (token: string) => setCaptchaToken(token),
+        "expired-callback": () => setCaptchaToken(null),
+        theme: "dark",
+      });
+      captchaWidgetIdRef.current = widgetId;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (document.querySelector('script[src*="hcaptcha"]')) {
+      setTimeout(renderCaptcha, 100);
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = "https://js.hcaptcha.com/1/api.js?render=explicit";
+    script.async = true;
+    script.onload = () => setTimeout(renderCaptcha, 100);
+    document.head.appendChild(script);
+    return () => {
+      captchaWidgetIdRef.current = null;
+    };
+  }, [renderCaptcha]);
+
+  // Re-render captcha when switching tabs
+  useEffect(() => {
+    setCaptchaToken(null);
+    captchaWidgetIdRef.current = null;
+    setTimeout(renderCaptcha, 100);
+  }, [activeTab, renderCaptcha]);
+
+  const resetCaptcha = () => {
+    setCaptchaToken(null);
+    if (window.hcaptcha && captchaWidgetIdRef.current) {
+      window.hcaptcha.reset(captchaWidgetIdRef.current);
+    }
+  };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
+
+    if (!captchaToken) {
+      toast({ title: "CAPTCHA required", description: "Please complete the CAPTCHA verification.", variant: "destructive" });
+      return;
+    }
 
     const result = loginSchema.safeParse(loginData);
     if (!result.success) {
@@ -60,9 +130,10 @@ const Auth = () => {
     setIsLoading(false);
 
     if (error) {
+      resetCaptcha();
       toast({
         title: "Login Failed",
-        description: error.message === "Invalid login credentials" 
+        description: error.message === "Invalid login credentials"
           ? "Incorrect email or password. Please try again."
           : error.message,
         variant: "destructive",
@@ -73,6 +144,11 @@ const Auth = () => {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
+
+    if (!captchaToken) {
+      toast({ title: "CAPTCHA required", description: "Please complete the CAPTCHA verification.", variant: "destructive" });
+      return;
+    }
 
     const result = signupSchema.safeParse(signupData);
     if (!result.success) {
@@ -89,24 +165,14 @@ const Auth = () => {
     setIsLoading(false);
 
     if (error) {
+      resetCaptcha();
       if (error.message.includes("already registered")) {
-        toast({
-          title: "Account Exists",
-          description: "An account with this email already exists. Please sign in instead.",
-          variant: "destructive",
-        });
+        toast({ title: "Account Exists", description: "An account with this email already exists. Please sign in instead.", variant: "destructive" });
       } else {
-        toast({
-          title: "Signup Failed",
-          description: error.message,
-          variant: "destructive",
-        });
+        toast({ title: "Signup Failed", description: error.message, variant: "destructive" });
       }
     } else {
-      toast({
-        title: "Account Created",
-        description: "Welcome to AP Creation! You are now signed in.",
-      });
+      toast({ title: "Account Created", description: "Welcome to AP Creation! You are now signed in." });
     }
   };
 
@@ -126,7 +192,7 @@ const Auth = () => {
         </div>
 
         <div className="bg-card border border-border rounded-xl p-6 shadow-lg">
-          <Tabs defaultValue="login" className="w-full">
+          <Tabs defaultValue="login" value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="login">Sign In</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
@@ -173,7 +239,16 @@ const Auth = () => {
                   {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
                 </div>
 
-                <Button type="submit" className="btn-primary w-full" disabled={isLoading}>
+                <div className="flex justify-center">
+                  <div ref={activeTab === "login" ? captchaContainerRef : undefined} />
+                </div>
+
+                <div className="flex items-center gap-2 justify-center text-xs text-muted-foreground">
+                  <Shield className="w-3.5 h-3.5 text-primary" />
+                  <span>Protected by hCaptcha</span>
+                </div>
+
+                <Button type="submit" className="btn-primary w-full" disabled={isLoading || !captchaToken}>
                   {isLoading ? "Signing in..." : "Sign In"}
                   <ArrowRight className="w-4 h-4" />
                 </Button>
@@ -237,7 +312,16 @@ const Auth = () => {
                   {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
                 </div>
 
-                <Button type="submit" className="btn-primary w-full" disabled={isLoading}>
+                <div className="flex justify-center">
+                  <div ref={activeTab === "signup" ? captchaContainerRef : undefined} />
+                </div>
+
+                <div className="flex items-center gap-2 justify-center text-xs text-muted-foreground">
+                  <Shield className="w-3.5 h-3.5 text-primary" />
+                  <span>Protected by hCaptcha</span>
+                </div>
+
+                <Button type="submit" className="btn-primary w-full" disabled={isLoading || !captchaToken}>
                   {isLoading ? "Creating account..." : "Create Account"}
                   <ArrowRight className="w-4 h-4" />
                 </Button>
