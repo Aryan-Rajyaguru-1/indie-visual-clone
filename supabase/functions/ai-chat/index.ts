@@ -10,24 +10,7 @@ serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const { messages, captchaToken } = await req.json();
-
-    // Verify hCaptcha
-    const hcaptchaSecret = Deno.env.get("HCAPTCHA_SECRET_KEY");
-    if (!hcaptchaSecret) throw new Error("HCAPTCHA_SECRET_KEY not configured");
-
-    const captchaRes = await fetch("https://api.hcaptcha.com/siteverify", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `response=${encodeURIComponent(captchaToken)}&secret=${encodeURIComponent(hcaptchaSecret)}`,
-    });
-    const captchaData = await captchaRes.json();
-    if (!captchaData.success) {
-      return new Response(JSON.stringify({ error: "CAPTCHA verification failed. Please try again." }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    const { messages } = await req.json();
 
     // Call Lovable AI
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
